@@ -1,7 +1,10 @@
 import java.math.BigDecimal;
 
+/*
+ * A class for accounts that generate interest.
+ * These can be loans or investment accounts.
+ */
 public class InterestAccount {
-    // java.math.BigDecimal
     BigDecimal balance;
     BigDecimal apr;
     BigDecimal payment;
@@ -9,11 +12,16 @@ public class InterestAccount {
     int months;
 
     /*
-     * This is the main driving function
+     * This is the main driving function, as this is the
+     * main action an account can perform.
      */
     void compound() {
 	months++;
+
+	// Compound the interest
 	balance = balance.multiply(apr);
+
+	// Subtract payments from loans, add to investments
 	if(isLoan) {
 	    subtract();
 	} else {
@@ -21,18 +29,14 @@ public class InterestAccount {
 	}
     }
 
-    private void add() {
-	balance = balance.add(payment);
-    }
-
-    private void subtract() {
-	balance = balance.subtract(payment);
-    }
-    
+    // Default is to be an investment account. If this is a
+    // loan, make the payments come off the balance.
     void makeLoan() {
 	isLoan = true;
     }
 
+    // This is the default behavior. Probably won't need
+    // to call this from outside.
     void makeInvestment() {
 	isLoan = false;
     }
@@ -61,12 +65,10 @@ public class InterestAccount {
 	return payment;
     }
 
-    private void createAPR(String value) {
-	apr = new BigDecimal(value);
-	apr = apr.divide(new BigDecimal("12"), 10, BigDecimal.ROUND_FLOOR);
-	apr = apr.add(new BigDecimal("1"));
-    }
-
+    /*
+     * These are the constructors for this class
+     *
+     */
     InterestAccount() {
 	makeInvestment();
 	balance = new BigDecimal("0.0");
@@ -81,5 +83,30 @@ public class InterestAccount {
 	createAPR(newAPR);
 	payment = new BigDecimal(newPayment);
 	months = 0;
+    }
+
+    InterestAccount(String newBalance, String newAPR) {
+	makeInvestment();
+	balance = new BigDecimal(newBalance);
+	createAPR(newAPR);
+	payment = new BigDecimal("0");
+	months = 0;
+    }
+
+    /*
+     * Private internal methods here.
+     */
+    private void add() {
+	balance = balance.add(payment);
+    }
+
+    private void subtract() {
+	balance = balance.subtract(payment);
+    }
+
+    private void createAPR(String value) {
+	apr = new BigDecimal(value);
+	apr = apr.divide(new BigDecimal("12"), 10, BigDecimal.ROUND_FLOOR);
+	apr = apr.add(new BigDecimal("1"));
     }
 }
