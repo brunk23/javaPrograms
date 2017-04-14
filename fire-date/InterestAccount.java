@@ -45,9 +45,13 @@ public class InterestAccount {
 	balance = new BigDecimal(newBalance);
     }
 
-    String getBalance() {
+    public String toString() {
 	return balance.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
     }
+
+    BigDecimal getBalance() {
+	return balance;
+    }	
 
     void setInterest(String newInterest) {
 	createAPR(newInterest);

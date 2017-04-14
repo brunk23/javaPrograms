@@ -17,13 +17,13 @@ public class FireDate {
 	    System.out.print(": ");
 	    for(i = 0; i < invest.length; ++i) {
 		invest[i].compound();
-		System.out.print("$" + invest[i].getBalance());
+		System.out.print("$" + invest[i]);
 		System.out.print("\t");
 	    }
 	    System.out.print("::\t");
 	    for(i = 0; i < debts.length; ++i) {
 		debts[i].compound();
-		System.out.print("$" + debts[i].getBalance());
+		System.out.print("$" + debts[i]);
 		System.out.print("\t");
 	    }
 	    // Print 2 lines
