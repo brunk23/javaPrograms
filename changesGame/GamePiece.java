@@ -17,10 +17,10 @@ public class GamePiece {
     static final int HEXAGON = 14;
 
     // instance variables
-    boolean isLarge;
-    int color;
-    boolean hole;
-    int shape;
+    private boolean isLarge;
+    private int color;
+    private boolean hole;
+    private int shape;
 
     void setShape(String description) {
 	if( description.equalsIgnoreCase("square") ) {

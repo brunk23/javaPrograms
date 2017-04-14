@@ -5,11 +5,11 @@ import java.math.BigDecimal;
  * These can be loans or investment accounts.
  */
 public class InterestAccount {
-    BigDecimal balance;
-    BigDecimal apr;
-    BigDecimal payment;
-    boolean isLoan;
-    int months;
+    private BigDecimal balance;
+    private BigDecimal apr;
+    private BigDecimal payment;
+    private boolean isLoan;
+    private int months;		// unused at the moment
 
     /*
      * This is the main driving function, as this is the
