@@ -38,6 +38,17 @@ public class GamePiece {
 	return shape;
     }
 
+    // Will print a string description of the object.
+    String toString() {
+	String description = new String("A ");
+	if( isLarge ) {
+	    description += "large ";
+	} else {
+	    description += "small ";
+	} 
+
+    }
+
     // Returns the number of differences
     int compareTo(GamePiece other) {
 	int count = 0;
