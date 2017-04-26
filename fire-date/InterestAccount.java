@@ -8,7 +8,7 @@ public class InterestAccount {
     private BigDecimal balance;
     private BigDecimal apr;
     private BigDecimal payment;
-    private boolean isLoan;
+    private boolean loan;
     private int months;		// unused at the moment
 
     /*
@@ -22,7 +22,7 @@ public class InterestAccount {
 	balance = balance.multiply(apr);
 
 	// Subtract payments from loans, add to investments
-	if(isLoan) {
+	if(loan) {
 	    subtract();
 	} else {
 	    add();
@@ -32,13 +32,17 @@ public class InterestAccount {
     // Default is to be an investment account. If this is a
     // loan, make the payments come off the balance.
     void makeLoan() {
-	isLoan = true;
+	loan = true;
+    }
+
+    public boolean isLoan() {
+	return loan;
     }
 
     // This is the default behavior. Probably won't need
     // to call this from outside.
     void makeInvestment() {
-	isLoan = false;
+	loan = false;
     }
 
     void setBalance(String newBalance) {
