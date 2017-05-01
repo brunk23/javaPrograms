@@ -8,21 +8,31 @@ public class Room {
     private final int WALL = 20;
     private final int NORMAL = 30;
     private final int EMPTY = 0x0;
-    private final int BORK = 0x100;
-    private final int WEAPON = 0x200;
-    private final int KEY = 0x400;
-    private final int TREASURE = 0x800;
 
     // We can visit 4 other rooms from here.
-    private Room[] exits = new Room[4]; 
+    private Room[] exits = new Room[4];
+    private Bork monster;
     private String description;
-    private int contents;
+    private Weapon sword;
     private int type;
+    private boolean key;
+    private Treasure gold;
 
     public void connect(int directon, Room destination) {
 	exits[direction] = destination;
     }
 
+    public dropKey() {
+	key = true;
+    }
+
+    public dropWeapon(Weapon aSword) {
+	sword = aSword;
+    }
+
+    public dropTreasure(Treasure someGold) {
+	gold = someGold;
+    }
 
     public String descr() {
 	return description;
@@ -37,5 +47,9 @@ public class Room {
 	description = new String("");
 	contents = EMPTY;
 	type = NORMAL;
+	monster = null;
+	gold = null;
+	sword = null;
+	key = false;
     }
 }
