@@ -17,19 +17,23 @@ import java.math.BigDecimal;
 
 public class FireDate {
     public static void main(String[] args) {
-	final BigDecimal investMultiplier = new BigDecimal("25");
-	BigDecimal annualExpenses;
-	BigDecimal noLoanInvestmentBase;
-	BigDecimal currentNeed;
-	BigDecimal currentHave;
+	final double investMultiplier = 25;
+	double annualExpenses;
+	double noLoanInvestmentBase;
+	double currentNeed;
+	double currentHave;
+	double pension;
+	double needAtRetirement;
 	int month;
+	int monthsUntilRetirement;
 	int i;
 	InterestAccount[] accounts;
 
 	// CONFIGURATION AREA
 
 	// Annual Expenses
-	annualExpenses = new BigDecimal("30000.00");
+	annualExpenses = 30000.00;
+	monthsUntilRetirement = 340;
 
 	// Configure accounts here
 	accounts = new InterestAccount[3];
@@ -40,19 +44,27 @@ public class FireDate {
 	accounts[2].makeLoan();
 
 	// Below here is all the working code.
-	noLoanInvestmentBase = annualExpenses.multiply(investMultiplier);
+	noLoanInvestmentBase = annualExpenses * investMultiplier;
 
 	for(month = 0; month <= 360; ++month) {
+
+	    monthsUntilRetirement--;
+	    if( monthsUntilRetirement < 0 ) {
+		monthsUntilRetirement = 0;
+	    }
+	    pension = 46000 * 0.016 * (12 + month/12);
+	    needAtRetirement = (annualExpenses - pension) * investMultiplier;
+	    
 	    currentNeed = noLoanInvestmentBase;
-	    currentHave = new BigDecimal("0");
+	    currentHave = 0.0;
 	    System.out.print(month);
 	    System.out.print(": ");
 	    for(i = 0; i < accounts.length; ++i) {
 		accounts[i].compound();
 		if( accounts[i].isLoan() ) {
-		    currentNeed = currentNeed.add(accounts[i].getBalance());
+		    currentNeed += accounts[i].toDouble();
 		} else {
-		    currentHave = currentHave.add(accounts[i].getBalance());
+		    currentHave += accounts[i].toDouble();
 		}
 		System.out.print("$" + accounts[i]);
 		System.out.print("\t");
@@ -60,12 +72,41 @@ public class FireDate {
 
 	    // Print 2 lines
 	    System.out.println("\n");
+	    
+	    if( currentHave > needAtRetirement ) {
+		double currentPay = 12;
+		currentPay *= glideDown( (currentHave - needAtRetirement),
+					 0.04,
+					 monthsUntilRetirement);
+		currentPay += needAtRetirement * 0.04;
+		if( currentPay > annualExpenses ) {
+		    System.out.println("We have enough to glide to retirement!\n");
+		    System.out.println("Pension: " + pension);
+		    System.out.println("Excess: " + (currentHave - needAtRetirement));
+		    System.out.println("Remaining: " + needAtRetirement);
+		    System.out.println("Months to pension: " + monthsUntilRetirement);
+		    break;
+		}
+	    }
 
-	    if( currentHave.compareTo(currentNeed) >= 0 ) {
+	    if( currentHave >= currentNeed ) {
 		System.out.println("We have enough to retire!\n");
 		break;
 	    }
 	}
 
     }
+
+    /*
+     * Since we need less at retirement, this
+     * sees how much we can spend down if we want
+     * to "retire" early.
+     */
+    private static double glideDown(double principal, double rate, int months) {
+	double monthlyRate = rate  / 12;
+	return (principal *
+		( monthlyRate /
+		  (1 - Math.pow(1 + monthlyRate,(-months)))));
+    }
+    
 }

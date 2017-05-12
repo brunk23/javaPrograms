@@ -5,8 +5,8 @@
 public class LilyPad {
     public static final int MAX_CONNECTIONS = 10;
 
-    GamePiece block;
-    Connection[] connections;
+    private GamePiece block;
+    private Connection[] connections;
     // Connections, probably an array to other LilyPads it touches
     // plus a count of the differences
 

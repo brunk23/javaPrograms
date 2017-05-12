@@ -53,6 +53,10 @@ public class InterestAccount {
 	return balance.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
     }
 
+    double toDouble() {
+	return balance.doubleValue();
+    }
+    
     BigDecimal getBalance() {
 	return balance;
     }	
