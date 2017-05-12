@@ -75,16 +75,23 @@ public class FireDate {
 	    
 	    if( currentHave > needAtRetirement ) {
 		double currentPay = 12;
-		currentPay *= glideDown( (currentHave - needAtRetirement),
+		double loanBalance = (currentNeed - noLoanInvestmentBase);
+		currentPay *= glideDown( (currentHave - needAtRetirement -
+					  loanBalance),
 					 0.04,
 					 monthsUntilRetirement);
 		currentPay += needAtRetirement * 0.04;
 		if( currentPay > annualExpenses ) {
 		    System.out.println("We have enough to glide to retirement!\n");
 		    System.out.println("Pension: " + pension);
-		    System.out.println("Excess: " + (currentHave - needAtRetirement));
+		    System.out.println("Excess: " +
+				       (currentHave -
+					needAtRetirement -
+					loanBalance));
+		    System.out.println("Loan Balance: " + loanBalance);
 		    System.out.println("Remaining: " + needAtRetirement);
-		    System.out.println("Months to pension: " + monthsUntilRetirement);
+		    System.out.println("Months to pension: " +
+				       monthsUntilRetirement);
 		    break;
 		}
 	    }
